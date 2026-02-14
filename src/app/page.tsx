@@ -9,13 +9,21 @@ export default function Home() {
   const [result, setResults]   = useState<object>();
 
   async function handleOnClick() {
-    const results = await fetch('/api/scraper', {
-      method: 'POST',
-      body: JSON.stringify({
-        siteUrl: 'https://spacejelly.dev'
-      })
-    }).then(r => r.json())
-    setResults(results)
+    try {
+      const r = await fetch('/api/scraper', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          siteUrl: 'https://spacejelly.dev'
+        })
+      });
+      const text = await r.text();
+      const results = text ? JSON.parse(text) : { error: `HTTP ${r.status}` };
+      if (!r.ok) setResults({ error: results?.message ?? results?.error ?? results, status: r.status });
+      else setResults(results);
+    } catch (e) {
+      setResults({ error: e instanceof Error ? e.message : 'Request failed' });
+    }
   }
 
   return (
