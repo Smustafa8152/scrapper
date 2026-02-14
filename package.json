@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google/genai": "^1.41.0",
     "@sparticuz/chromium": "^132.0.0",
     "@sparticuz/chromium-min": "^126.0.0",
     "cloudinary": "^2.4.0",
